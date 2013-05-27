@@ -6,6 +6,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace C_Sharp_Kursovoi_3_kurs
 {
@@ -59,7 +60,7 @@ namespace C_Sharp_Kursovoi_3_kurs
 				} else {
 					Log("Request URI: "+url+" [OK]");
 				}
-				string filepath= save_folder+"\\"+MakeName(url)+".html";
+				string filepath= save_folder+Path.DirectorySeparatorChar+MakeName(url)+".html";
 				using(Stream file = File.OpenWrite(filepath)) {
 					CopyStream(resp, file);
 					Log("Saved to: "+filepath);
@@ -96,8 +97,8 @@ namespace C_Sharp_Kursovoi_3_kurs
 							new_urls.Add(input_1+ii+input_2);
 						}
 					} else if(Regex.IsMatch(match_inner, @"^\d\d/\d\d/\d\d\d\d\-\d\d/\d\d/\d\d\d\d$")) {
-						DateTime startDate = DateTime.Parse(start);
-						DateTime endDate = DateTime.Parse(finish);
+						DateTime startDate = DateTime.ParseExact(start, @"dd\/MM\/yyyy", CultureInfo.InvariantCulture);
+						DateTime endDate = DateTime.ParseExact(finish, @"dd\/MM\/yyyy", CultureInfo.InvariantCulture);
 						///
 						while(DateTime.Compare(startDate, endDate)<=0) {
 							new_urls.Add(input_1+startDate.ToString(@"dd\/MM\/yyyy")+input_2);
